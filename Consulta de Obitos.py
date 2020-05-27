@@ -3,11 +3,33 @@ from tkinter.ttk import *
 from tkinter import scrolledtext
 import sqlite3
 from threading import Timer
+from PIL import ImageTk, Image
 
 class GUI:
 
-    def nova_janela(self):
-        self.jan=Tk()
+    def __init__(self, master=None):
+        self.botao = Frame(master)
+        self.botao.pack()
+
+        self.photo = Image.open("logo.jpg")
+        self.photo = ImageTk.PhotoImage(self.photo)  
+
+        self.lb_label = Label(self.botao, image = self.photo)
+        self.lb_label.image = self.photo
+        self.lb_label.pack()
+
+        self.btn_inserir = Button(self.botao, text='INSERIR', command=self.insere)
+        self.btn_inserir.pack(side=LEFT, ipadx=22, ipady=15)
+
+        self.btn_buscar = Button(self.botao, text='BUSCAR', command=self.buscar)
+        self.btn_buscar.pack(side=LEFT,ipadx=22, ipady=15)
+
+        self.btn_remover = Button(self.botao, text='REMOVER')
+        self.btn_remover.pack(side=LEFT,ipadx=22,ipady=15)
+
+
+    def buscar(self):
+        self.jan=Toplevel()
 
         self.jan.geometry("400x625")
 
@@ -116,9 +138,12 @@ class GUI:
 
         self.Resultado = scrolledtext.ScrolledText(self.caixaTexto,width=45,height=35)
         self.Resultado.pack()
-
-
     
+        self.jan.transient(pagina)#
+    
+        self.jan.focus_force()#
+            
+        self.jan.grab_set()#
     def buscar_banco(self):
         self.conexao = sqlite3.connect('promemoria.db')
         
@@ -199,79 +224,85 @@ class GUI:
              
         c.close()
 
-    def __init__(self, master=None):
+    def insere(self):
+
+        self.insere=Toplevel()
+
+        self.insere.geometry("275x590")
         
-        self.NumObito = Frame(master)
+        self.NumObito = Frame(self.insere)
         self.NumObito["padding"] = 5
         self.NumObito.pack()
         
-        self.NumSepultura = Frame(master)
+        self.NumSepultura = Frame(self.insere)
         self.NumSepultura["padding"] = 5
         self.NumSepultura.pack()
         
-        self.Nome = Frame(master)
+        self.Nome = Frame(self.insere)
         self.Nome["padding"] = 5
         self.Nome.pack()
 
-        self.Idade = Frame(master)
+        self.Idade = Frame(self.insere)
         self.Idade["padding"] = 5
         self.Idade.pack()
 
-        self.Pai = Frame(master)
+        self.Pai = Frame(self.insere)
         self.Pai["padding"] = 5
         self.Pai.pack()
 
-        self.Mae = Frame(master)
+        self.Mae = Frame(self.insere)
         self.Mae["padding"] = 5
         self.Mae.pack()
 
-        self.Natural = Frame(master)
+        self.Natural = Frame(self.insere)
         self.Natural["padding"] = 5
         self.Natural.pack()
         
-        self.CausaMorte = Frame(master)
+        self.CausaMorte = Frame(self.insere)
         self.CausaMorte["padding"] = 5
         self.CausaMorte.pack()
 
-        self.DataFalecimento = Frame(master)
+        self.DataFalecimento = Frame(self.insere)
         self.DataFalecimento["padding"] = 5
         self.DataFalecimento.pack()
         
-        self.DeclaradoPor = Frame(master)
+        self.DeclaradoPor = Frame(self.insere)
         self.DeclaradoPor["padding"] = 5
         self.DeclaradoPor.pack()
 
-        self.InumadoSepultura = Frame(master)
+        self.InumadoSepultura = Frame(self.insere)
         self.InumadoSepultura["padding"] = 5
         self.InumadoSepultura.pack()
 
-        self.Atestado = Frame(master)
+        self.Atestado = Frame(self.insere)
         self.Atestado["padding"] = 5
         self.Atestado.pack()
 
-        self.Func = Frame(master)
+        self.Func = Frame(self.insere)
         self.Func["padding"] = 5
         self.Func.pack()
 
-        self.Cemiterio = Frame(master)
+        self.Cemiterio = Frame(self.insere)
         self.Cemiterio["padding"] = 5
         self.Cemiterio.pack()
 
-        self.Quadra = Frame(master)
+        self.Quadra = Frame(self.insere)
         self.Quadra["padding"] = 5
         self.Quadra.pack()
 
-        self.Livro = Frame(master)
+        self.Livro = Frame(self.insere)
         self.Livro["padding"] = 0
         self.Livro.pack()
         
-        self.Folha = Frame(master)
+        self.Folha = Frame(self.insere)
         self.Folha["padding"] = 5
         self.Folha.pack()
 
-        self.botao = Frame(master).pack()
+        self.botao = Frame(self.insere)
+        self.botao.pack()
 
-        self.Msg = Frame(master).pack()
+        self.Msg = Frame(self.insere)
+        self.Msg.pack()
 
         self.lblNumObito = Label(self.NumObito, text="Nº Obito: ", width=20).pack(side=LEFT)
         self.lblNumSepultura = Label(self.NumSepultura, text="Nº Sepultura: ", width=20).pack(side=LEFT)
@@ -328,13 +359,19 @@ class GUI:
         self.entFolha.pack(side=LEFT)
 
         self.btnInsere = Button(self.botao, text="Inserir", command=self.insere_banco)
-        self.btnBuscar = Button(self.botao, text="Buscar", command=self.nova_janela)
         self.btnInsere.pack()
-        self.btnBuscar.pack()
 
         self.lblMsg = Label(self.Msg, text="")
         self.lblMsg.pack()
 
+        self.insere.transient(pagina)
+    
+        self.insere.focus_force()
+            
+        self.insere.grab_set()
+
+        self.insere.iconbitmap('images\icon.ico')
+        self.insere.title('Consulta de Obitos')
 
     def cria_banco(self):
         self.conexao = sqlite3.connect('promemoria.db')
@@ -359,65 +396,68 @@ class GUI:
             Livro varchar(100),\
             Folha varchar(100));")
 
-    def success(self):
-        self.lblMsg['text'] = ""
-
-    def error(self):
+    def reset(self):
         self.lblMsg['text'] = ""
     
     def insere_banco(self):
-
-        try:
-            self.conexao = sqlite3.connect('promemoria.db')
-            c = self.conexao.cursor()  
-            c.execute("INSERT INTO cemiterio VALUES(\
-                '" + self.entNumObito.get().lower() + "',\
-                '" + self.entNumSepultura.get().lower() + "',\
-                '" + self.entNome.get().lower() + "',\
-                '" + self.entIdade.get().lower() + "',\
-                '" + self.entPai.get().lower() + "',\
-                '" + self.entMae.get().lower() + "',\
-                '" + self.entNatural.get().lower() + "',\
-                '" + self.entCausaMorte.get().lower() + "',\
-                '" + self.entDataFalecimento.get().lower() + "',\
-                '" + self.entDeclaradoPor.get().lower() + "',\
-                '" + self.entInumadoSepultura.get().lower() + "',\
-                '" + self.entAtestado.get().lower() + "',\
-                '" + self.entFunc.get().lower() + "',\
-                '" + self.entCemiterio.get().lower() + "',\
-                '" + self.entQuadra.get().lower() + "',\
-                '" + self.entLivro.get().lower() + "',\
-                '" + self.entFolha.get().lower() + "');")
-
-            self.conexao.commit()
-            c.close()
-            
-            self.entNumObito.delete(0, END)
-            self.entNumSepultura.delete(0, END)
-            self.entNome.delete(0, END)
-            self.entIdade.delete(0, END)
-            self.entPai.delete(0, END)
-            self.entMae.delete(0, END)
-            self.entNatural.delete(0, END)
-            self.entCausaMorte.delete(0, END)
-            self.entDataFalecimento.delete(0, END)
-            self.entDeclaradoPor.delete(0, END)
-            self.entInumadoSepultura.delete(0, END)
-            self.entAtestado.delete(0, END)
-            self.entFunc.delete(0, END)
-            self.entCemiterio.delete(0, END)
-            self.entQuadra.delete(0, END)
-            self.entLivro.delete(0, END)
-            self.entFolha.delete(0, END)
-            self.lblMsg['text'] = 'Cadastrou'
-            self.lblMsg['foreground'] = "green"
-            t = Timer(4, self.success)
-            t.start()
-        except:
-            self.lblMsg['text'] = 'Ocorreu um erro no cadastro de Obito'
+        if (self.entNumObito.get().lower() == ""):
+            self.lblMsg['text'] = 'O numero do Obito não pode ser nulo!'
             self.lblMsg['foreground'] = "red"
-            t = Timer(4, self.error)
+            t = Timer(4, self.reset)
             t.start()
+
+        else:
+            try:
+                self.conexao = sqlite3.connect('promemoria.db')
+                c = self.conexao.cursor()  
+                c.execute("INSERT INTO cemiterio VALUES(\
+                    '" + self.entNumObito.get().lower() + "',\
+                    '" + self.entNumSepultura.get().lower() + "',\
+                    '" + self.entNome.get().lower() + "',\
+                    '" + self.entIdade.get().lower() + "',\
+                    '" + self.entPai.get().lower() + "',\
+                    '" + self.entMae.get().lower() + "',\
+                    '" + self.entNatural.get().lower() + "',\
+                    '" + self.entCausaMorte.get().lower() + "',\
+                    '" + self.entDataFalecimento.get().lower() + "',\
+                    '" + self.entDeclaradoPor.get().lower() + "',\
+                    '" + self.entInumadoSepultura.get().lower() + "',\
+                    '" + self.entAtestado.get().lower() + "',\
+                    '" + self.entFunc.get().lower() + "',\
+                    '" + self.entCemiterio.get().lower() + "',\
+                    '" + self.entQuadra.get().lower() + "',\
+                    '" + self.entLivro.get().lower() + "',\
+                    '" + self.entFolha.get().lower() + "');")
+
+                self.conexao.commit()
+                c.close()
+                
+                self.entNumObito.delete(0, END)
+                self.entNumSepultura.delete(0, END)
+                self.entNome.delete(0, END)
+                self.entIdade.delete(0, END)
+                self.entPai.delete(0, END)
+                self.entMae.delete(0, END)
+                self.entNatural.delete(0, END)
+                self.entCausaMorte.delete(0, END)
+                self.entDataFalecimento.delete(0, END)
+                self.entDeclaradoPor.delete(0, END)
+                self.entInumadoSepultura.delete(0, END)
+                self.entAtestado.delete(0, END)
+                self.entFunc.delete(0, END)
+                self.entCemiterio.delete(0, END)
+                self.entQuadra.delete(0, END)
+                self.entLivro.delete(0, END)
+                self.entFolha.delete(0, END)
+                self.lblMsg['text'] = 'Cadastrou'
+                self.lblMsg['foreground'] = "green"
+                t = Timer(4, self.reset)
+                t.start()
+            except:
+                self.lblMsg['text'] = 'Ocorreu um erro no cadastro de Obito'
+                self.lblMsg['foreground'] = "red"
+                t = Timer(4, self.reset)
+                t.start()
 
 
 
