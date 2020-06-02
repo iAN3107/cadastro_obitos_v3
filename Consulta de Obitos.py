@@ -44,26 +44,26 @@ class GUI:
 
         self.jan2.geometry("400x625")
 
-        self.busca = Frame(self.jan2)
-        self.busca.pack()
+        self.buscaa = Frame(self.jan2)
+        self.buscaa.pack()
 
-        self.busca2 = Frame(self.jan2)
-        self.busca2.pack()
+        self.buscaa2 = Frame(self.jan2)
+        self.buscaa2.pack()
 
-        self.busca3 = Frame(self.jan2)
-        self.busca3.pack()
+        self.buscaa3 = Frame(self.jan2)
+        self.buscaa3.pack()
 
         self.button = Frame(self.jan2)
         self.button.pack()
 
-        self.caixaTexto = Frame(self.jan2)
-        self.caixaTexto.pack()
+        self.caixaTextoo = Frame(self.jan2)
+        self.caixaTextoo.pack()
 
-        self.lblBusca = Label(self.busca, text="Buscar por: ")
-        self.lblBusca.pack()
+        self.lblBuscaa = Label(self.buscaa, text="Buscaar por: ")
+        self.lblBuscaa.pack()
 
         
-        self.cbBusca = Combobox(self.busca, values=[
+        self.cbBuscaa = Combobox(self.buscaa, values=[
             "",
             "NumObito",
             "NumSepultura",
@@ -81,13 +81,13 @@ class GUI:
             "Livro",
             "Folha"
         ], state="readonly")
-        self.cbBusca.current()
-        self.cbBusca.pack(side=LEFT)
+        self.cbBuscaa.current()
+        self.cbBuscaa.pack(side=LEFT)
         
-        self.entBusca = Entry(self.busca)
-        self.entBusca.pack(padx=10)
+        self.entBuscaa = Entry(self.buscaa)
+        self.entBuscaa.pack(padx=10)
         
-        self.cbBusca2 = Combobox(self.busca2, values=[
+        self.cbBuscaa2 = Combobox(self.buscaa2, values=[
             "",
             "NumObito",
             "NumSepultura",
@@ -105,13 +105,13 @@ class GUI:
             "Livro",
             "Folha"
         ], state="readonly")
-        self.cbBusca2.current()
-        self.cbBusca2.pack(side=LEFT)
+        self.cbBuscaa2.current()
+        self.cbBuscaa2.pack(side=LEFT)
 
-        self.entBusca2 = Entry(self.busca2)
-        self.entBusca2.pack(padx=10)
+        self.entBuscaa2 = Entry(self.buscaa2)
+        self.entBuscaa2.pack(padx=10)
 
-        self.cbBusca3 = Combobox(self.busca3, values=[
+        self.cbBuscaa3 = Combobox(self.buscaa3, values=[
             "",
             "NumObito",
             "NumSepultura",
@@ -129,20 +129,20 @@ class GUI:
             "Livro",
             "Folha"
         ], state="readonly")
-        self.cbBusca3.current()
-        self.cbBusca3.pack(side=LEFT)
+        self.cbBuscaa3.current()
+        self.cbBuscaa3.pack(side=LEFT)
 
-        self.entBusca3 = Entry(self.busca3)
-        self.entBusca3.pack(padx=10)
+        self.entBuscaa3 = Entry(self.buscaa3)
+        self.entBuscaa3.pack(padx=10)
 
-        self.btnBusca = Button(self.button, text="Buscar", command=self.busca_banco_avancado)
-        self.btnBusca.pack(side=BOTTOM, pady=5)
+        self.btnBuscaa = Button(self.button, text="Buscaar", command=self.busca_banco_avancado)
+        self.btnBuscaa.pack(side=BOTTOM, pady=5)
 
         self.jan2.iconbitmap('images\icon.ico')
         self.jan2.title('Consulta de Obitos')
 
-        self.Resultado = scrolledtext.ScrolledText(self.caixaTexto,width=45,height=35)
-        self.Resultado.pack()
+        self.Resultaado = scrolledtext.ScrolledText(self.caixaTextoo,width=45,height=35)
+        self.Resultaado.pack()
     
         self.jan2.transient(pagina)#
     
@@ -150,78 +150,8 @@ class GUI:
             
         self.jan2.grab_set()#
 
-    def busca_banco_avancado(self):
-        self.conexao = sqlite3.connect('promemoria.db')
-        
-        c = self.conexao.cursor()  
-        self.Resultado.delete(1.0,END)
-        if (self.cbBusca.get() != "" and self.entBusca.get() != "" and self.cbBusca2.get() != "" and self.entBusca2.get() != "" and self.cbBusca3.get() != "" and self.entBusca3.get() != ""):
-            c.execute("SELECT * FROM cemiterio WHERE(" + self.cbBusca.get() +" = '" + self.entBusca.get().lower() +"' and "+ self.cbBusca2.get() +" = '"+ self.entBusca2.get().lower() +"' and "+ self.cbBusca3.get() +" = '"+ self.entBusca3.get().lower() +"') COLLATE NOCASE;")
-            
-            for linha in c:
-                
-                
-                self.Resultado.insert(INSERT, "Numero do Obito: ", INSERT, linha[0], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Numero da Sepultura: ", INSERT, linha[1], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Nome: ", INSERT, linha[2], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Nome Contribuinte: ", INSERT, linha[3], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Idade: ", INSERT, linha[4], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Pai: ", INSERT, linha[5], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Mae: ", INSERT, linha[6], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Natural de: ", INSERT, linha[7], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Causa da Morte: ", INSERT, linha[8], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Data de Falecimento: ", INSERT, linha[9], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Inumado em Sepultura: ", INSERT, linha[10], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Cemiterio: ", INSERT, linha[11], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Quadra: ", INSERT, linha[12], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Livro: ", INSERT, linha[13], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Folha: ", INSERT, linha[14], INSERT, "\n")
-                self.Resultado.insert(INSERT, "\n \n")  
 
-                               
 
-        elif (self.cbBusca.get() != "" and self.entBusca.get() != "" and self.cbBusca2.get() != "" and self.entBusca2.get() != ""):
-            c.execute("SELECT * FROM cemiterio WHERE(" + self.cbBusca.get() +" = '" + self.entBusca.get().lower() +"' and "+ self.cbBusca2.get() +" = '"+ self.entBusca2.get().lower() +"') COLLATE NOCASE;")
-            for linha in c:    
-                self.Resultado.insert(INSERT, "Numero do Obito: ", INSERT, linha[0], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Numero da Sepultura: ", INSERT, linha[1], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Nome: ", INSERT, linha[2], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Nome Contribuinte: ", INSERT, linha[3], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Idade: ", INSERT, linha[4], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Pai: ", INSERT, linha[5], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Mae: ", INSERT, linha[6], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Natural de: ", INSERT, linha[7], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Causa da Morte: ", INSERT, linha[8], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Data de Falecimento: ", INSERT, linha[9], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Inumado em Sepultura: ", INSERT, linha[10], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Cemiterio: ", INSERT, linha[11], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Quadra: ", INSERT, linha[12], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Livro: ", INSERT, linha[13], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Folha: ", INSERT, linha[14], INSERT, "\n")
-                self.Resultado.insert(INSERT, "\n \n")  
-            
-
-        elif (self.cbBusca.get() != "" and self.entBusca.get() != ""):
-            c.execute("SELECT * FROM cemiterio WHERE(" + self.cbBusca.get() +" = '" + self.entBusca.get().lower() +"') COLLATE NOCASE;")
-            for linha in c:    
-                self.Resultado.insert(INSERT, "Numero do Obito: ", INSERT, linha[0], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Numero da Sepultura: ", INSERT, linha[1], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Nome: ", INSERT, linha[2], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Nome Contribuinte: ", INSERT, linha[3], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Idade: ", INSERT, linha[4], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Pai: ", INSERT, linha[5], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Mae: ", INSERT, linha[6], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Natural de: ", INSERT, linha[7], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Causa da Morte: ", INSERT, linha[8], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Data de Falecimento: ", INSERT, linha[9], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Inumado em Sepultura: ", INSERT, linha[10], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Cemiterio: ", INSERT, linha[11], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Quadra: ", INSERT, linha[12], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Livro: ", INSERT, linha[13], INSERT, "\n")
-                self.Resultado.insert(INSERT, "Folha: ", INSERT, linha[14], INSERT, "\n")
-                self.Resultado.insert(INSERT, "\n \n")  
-             
-        c.close()
 
     def buscar(self):
         self.jan=Toplevel()
@@ -281,6 +211,78 @@ class GUI:
         self.jan.focus_force()#
             
         self.jan.grab_set()#
+    def busca_banco_avancado(self):
+        self.conexao = sqlite3.connect('promemoria.db')
+        
+        c = self.conexao.cursor()  
+        self.Resultaado.delete(1.0,END)
+        if (self.cbBuscaa.get() != "" and self.entBuscaa.get() != "" and self.cbBuscaa2.get() != "" and self.entBuscaa2.get() != "" and self.cbBuscaa3.get() != "" and self.entBuscaa3.get() != ""):
+            c.execute("SELECT * FROM cemiterio WHERE(" + self.cbBuscaa.get() +" = '" + self.entBuscaa.get().lower() +"' and "+ self.cbBuscaa2.get() +" = '"+ self.entBuscaa2.get().lower() +"' and "+ self.cbBuscaa3.get() +" = '"+ self.entBuscaa3.get().lower() +"') COLLATE NOCASE;")
+            
+            for linha in c:
+                
+                
+                self.Resultaado.insert(INSERT, "Numero do Obito: ", INSERT, linha[0], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Numero da Sepultura: ", INSERT, linha[1], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Nome: ", INSERT, linha[2], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Nome Contribuinte: ", INSERT, linha[3], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Idade: ", INSERT, linha[4], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Pai: ", INSERT, linha[5], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Mae: ", INSERT, linha[6], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Natural de: ", INSERT, linha[7], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Causa da Morte: ", INSERT, linha[8], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Data de Falecimento: ", INSERT, linha[9], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Inumado em Sepultura: ", INSERT, linha[10], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Cemiterio: ", INSERT, linha[11], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Quadra: ", INSERT, linha[12], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Livro: ", INSERT, linha[13], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Folha: ", INSERT, linha[14], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "\n \n")  
+
+                               
+
+        elif (self.cbBuscaa.get() != "" and self.entBuscaa.get() != "" and self.cbBuscaa2.get() != "" and self.entBuscaa2.get() != ""):
+            c.execute("SELECT * FROM cemiterio WHERE(" + self.cbBuscaa.get() +" = '" + self.entBuscaa.get().lower() +"' and "+ self.cbBuscaa2.get() +" = '"+ self.entBuscaa2.get().lower() +"') COLLATE NOCASE;")
+            for linha in c:    
+                self.Resultaado.insert(INSERT, "Numero do Obito: ", INSERT, linha[0], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Numero da Sepultura: ", INSERT, linha[1], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Nome: ", INSERT, linha[2], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Nome Contribuinte: ", INSERT, linha[3], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Idade: ", INSERT, linha[4], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Pai: ", INSERT, linha[5], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Mae: ", INSERT, linha[6], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Natural de: ", INSERT, linha[7], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Causa da Morte: ", INSERT, linha[8], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Data de Falecimento: ", INSERT, linha[9], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Inumado em Sepultura: ", INSERT, linha[10], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Cemiterio: ", INSERT, linha[11], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Quadra: ", INSERT, linha[12], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Livro: ", INSERT, linha[13], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Folha: ", INSERT, linha[14], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "\n \n")  
+            
+
+        elif (self.cbBuscaa.get() != "" and self.entBuscaa.get() != ""):
+            c.execute("SELECT * FROM cemiterio WHERE(" + self.cbBuscaa.get() +" = '" + self.entBuscaa.get().lower() +"') COLLATE NOCASE;")
+            for linha in c:    
+                self.Resultaado.insert(INSERT, "Numero do Obito: ", INSERT, linha[0], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Numero da Sepultura: ", INSERT, linha[1], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Nome: ", INSERT, linha[2], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Nome Contribuinte: ", INSERT, linha[3], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Idade: ", INSERT, linha[4], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Pai: ", INSERT, linha[5], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Mae: ", INSERT, linha[6], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Natural de: ", INSERT, linha[7], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Causa da Morte: ", INSERT, linha[8], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Data de Falecimento: ", INSERT, linha[9], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Inumado em Sepultura: ", INSERT, linha[10], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Cemiterio: ", INSERT, linha[11], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Quadra: ", INSERT, linha[12], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Livro: ", INSERT, linha[13], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "Folha: ", INSERT, linha[14], INSERT, "\n")
+                self.Resultaado.insert(INSERT, "\n \n")  
+             
+        c.close()
     def buscar_banco(self):
         self.conexao = sqlite3.connect('promemoria.db')
         
