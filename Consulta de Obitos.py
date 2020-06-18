@@ -135,7 +135,7 @@ class GUI:
         self.entBuscaa3 = Entry(self.buscaa3)
         self.entBuscaa3.pack(padx=10)
 
-        self.btnBuscaa = Button(self.button, text="Buscaar", command=self.busca_banco_avancado)
+        self.btnBuscaa = Button(self.button, text="Buscar", command=self.busca_banco_avancado)
         self.btnBuscaa.pack(side=BOTTOM, pady=5)
 
         self.jan2.iconbitmap('images\icon.ico')
@@ -359,7 +359,7 @@ class GUI:
 
         self.insere=Toplevel()
 
-        self.insere.geometry("275x520")
+        self.insere.geometry("275x530")
         
         self.NumObito = Frame(self.insere)
         self.NumObito["padding"] = 5
