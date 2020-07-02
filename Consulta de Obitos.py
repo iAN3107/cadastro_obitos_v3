@@ -1,9 +1,19 @@
-from tkinter import *.
+from tkinter import *
 from tkinter.ttk import *
 from tkinter import scrolledtext
-import sqlite3
+import pymysql
 from threading import Timer
 from PIL import ImageTk, Image
+
+conexao = pymysql.connect(
+host = '192.168.0.19',
+user = 'ian2',
+passwd = 'password'
+)    
+c = conexao.cursor()
+
+c.execute("USE cemiterio;")
+
 
 class GUI:
     def __init__(self, master=None):
@@ -24,17 +34,23 @@ class GUI:
         self.btn_buscar.pack(side=RIGHT,ipadx=22, ipady=15)
 
     def remove_banco(self):
-        self.conexao = sqlite3.connect('promemoria.db')
+        self.conexao = pymysql.connect(
+        host = '192.168.0.19',
+        user = 'ian2',
+        passwd = 'password'
+        )
         c = self.conexao.cursor()
+        c.execute("USE cemiterio;")
+        
         self.Resultado.delete(1.0,END)
         if (self.entBusca.get() != "" and self.entBusca2.get() != "" and self.entBusca3.get() != ""):
-            c.execute("DELETE FROM cemiterio WHERE(Nome = '" + self.entBusca.get().lower() +"' and DataFalecimento = '"+ self.entBusca2.get().lower() +"' and NumSepultura = '"+ self.entBusca3.get().lower() +"') COLLATE NOCASE;")
+            c.execute("DELETE FROM cemiterio WHERE(Nome = '" + self.entBusca.get().lower() +"' and DataFalecimento = '"+ self.entBusca2.get().lower() +"' and NumSepultura = '"+ self.entBusca3.get().lower() +"');")
         
         elif (self.entBusca.get() != "" and self.entBusca2.get() != ""):
-            c.execute("DELETE FROM cemiterio WHERE(Nome = '" + self.entBusca.get().lower() +"' and DataFalecimento = '"+ self.entBusca2.get().lower() +"') COLLATE NOCASE;")
+            c.execute("DELETE FROM cemiterio WHERE(Nome = '" + self.entBusca.get().lower() +"' and DataFalecimento = '"+ self.entBusca2.get().lower() +"');")
         
         elif (self.entBusca.get() != ""):
-            c.execute("DELETE FROM cemiterio WHERE(Nome = '" + self.entBusca.get().lower() +"') COLLATE NOCASE;")
+            c.execute("DELETE FROM cemiterio WHERE(Nome = '" + self.entBusca.get().lower() +"');")
         self.conexao.commit()
 
         c.close()
@@ -59,7 +75,7 @@ class GUI:
         self.caixaTextoo = Frame(self.jan2)
         self.caixaTextoo.pack()
 
-        self.lblBuscaa = Label(self.buscaa, text="Buscaar por: ")
+        self.lblBuscaa = Label(self.buscaa, text="Buscar por: ")
         self.lblBuscaa.pack()
 
         
@@ -212,12 +228,16 @@ class GUI:
             
         self.jan.grab_set()#
     def busca_banco_avancado(self):
-        self.conexao = sqlite3.connect('promemoria.db')
-        
+        self.conexao = pymysql.connect(
+        host = '192.168.0.19',
+        user = 'ian2',
+        passwd = 'password'
+        )         
         c = self.conexao.cursor()  
+        c.execute("USE cemiterio;")
         self.Resultaado.delete(1.0,END)
         if (self.cbBuscaa.get() != "" and self.entBuscaa.get() != "" and self.cbBuscaa2.get() != "" and self.entBuscaa2.get() != "" and self.cbBuscaa3.get() != "" and self.entBuscaa3.get() != ""):
-            c.execute("SELECT * FROM cemiterio WHERE(" + self.cbBuscaa.get() +" = '" + self.entBuscaa.get().lower() +"' and "+ self.cbBuscaa2.get() +" = '"+ self.entBuscaa2.get().lower() +"' and "+ self.cbBuscaa3.get() +" = '"+ self.entBuscaa3.get().lower() +"') COLLATE NOCASE;")
+            c.execute("SELECT * FROM cemiterio WHERE(" + self.cbBuscaa.get() +" LIKE '%" + self.entBuscaa.get().higher() +"%' and "+ self.cbBuscaa2.get() +" LIKE '%"+ self.entBuscaa2.get().lower() +"%' and "+ self.cbBuscaa3.get() +" LIKE '%"+ self.entBuscaa3.get().lower() +"%');")
             
             for linha in c:
                 
@@ -242,7 +262,7 @@ class GUI:
                                
 
         elif (self.cbBuscaa.get() != "" and self.entBuscaa.get() != "" and self.cbBuscaa2.get() != "" and self.entBuscaa2.get() != ""):
-            c.execute("SELECT * FROM cemiterio WHERE(" + self.cbBuscaa.get() +" = '" + self.entBuscaa.get().lower() +"' and "+ self.cbBuscaa2.get() +" = '"+ self.entBuscaa2.get().lower() +"') COLLATE NOCASE;")
+            c.execute("SELECT * FROM cemiterio WHERE(" + self.cbBuscaa.get() +" LIKE '%" + self.entBuscaa.get().upper()+"%' and "+ self.cbBuscaa2.get() +" LIKE '%"+ self.entBuscaa2.get().lower() +"%');")
             for linha in c:    
                 self.Resultaado.insert(INSERT, "Numero do Obito: ", INSERT, linha[0], INSERT, "\n")
                 self.Resultaado.insert(INSERT, "Numero da Sepultura: ", INSERT, linha[1], INSERT, "\n")
@@ -263,7 +283,7 @@ class GUI:
             
 
         elif (self.cbBuscaa.get() != "" and self.entBuscaa.get() != ""):
-            c.execute("SELECT * FROM cemiterio WHERE(" + self.cbBuscaa.get() +" = '" + self.entBuscaa.get().lower() +"') COLLATE NOCASE;")
+            c.execute("SELECT * FROM cemiterio WHERE(" + self.cbBuscaa.get() +" LIKE '%" + self.entBuscaa.get().lower() +"%');")
             for linha in c:    
                 self.Resultaado.insert(INSERT, "Numero do Obito: ", INSERT, linha[0], INSERT, "\n")
                 self.Resultaado.insert(INSERT, "Numero da Sepultura: ", INSERT, linha[1], INSERT, "\n")
@@ -284,12 +304,16 @@ class GUI:
              
         c.close()
     def buscar_banco(self):
-        self.conexao = sqlite3.connect('promemoria.db')
-        
+        self.conexao = pymysql.connect(
+        host = '192.168.0.19',
+        user = 'ian2',
+        passwd = 'password'
+        )       
         c = self.conexao.cursor()  
+        c.execute("USE cemiterio;")
         self.Resultado.delete(1.0,END)
         if (self.entBusca.get() != "" and self.entBusca2.get() != "" and self.entBusca3.get() != ""):
-            c.execute("SELECT * FROM cemiterio WHERE(Nome = '" + self.entBusca.get().lower() +"' and DataFalecimento = '"+ self.entBusca2.get().lower() +"' and NumSepultura = '"+ self.entBusca3.get().lower() +"') COLLATE NOCASE;")
+            c.execute("SELECT * FROM cemiterio WHERE(Nome LIKE '%" + self.entBusca.get() +"%' and DataFalecimento LIKE '%"+ self.entBusca2.get() +"%' and NumSepultura LIKE '%"+ self.entBusca3.get() +"%');")
             
             for linha in c:
                 
@@ -314,7 +338,7 @@ class GUI:
                                
 
         elif (self.entBusca.get() != "" and self.entBusca2.get() != ""):
-            c.execute("SELECT * FROM cemiterio WHERE( Nome = '" + self.entBusca.get().lower() +"' and DataFalecimento = '"+ self.entBusca2.get().lower() +"') COLLATE NOCASE;")
+            c.execute("SELECT * FROM cemiterio WHERE( Nome LIKE '%" + self.entBusca.get() +"%' and DataFalecimento LIKE '%"+ self.entBusca2.get() +"%');")
             for linha in c:    
                 self.Resultado.insert(INSERT, "Numero do Obito: ", INSERT, linha[0], INSERT, "\n")
                 self.Resultado.insert(INSERT, "Numero da Sepultura: ", INSERT, linha[1], INSERT, "\n")
@@ -335,7 +359,7 @@ class GUI:
             
 
         elif (self.entBusca.get() != ""):
-            c.execute("SELECT * FROM cemiterio WHERE(Nome = '" + self.entBusca.get().lower() +"') COLLATE NOCASE;")
+            c.execute("SELECT * FROM cemiterio WHERE(Nome LIKE '%" + self.entBusca.get() +"%');")
             for linha in c:    
                 self.Resultado.insert(INSERT, "Numero do Obito: ", INSERT, linha[0], INSERT, "\n")
                 self.Resultado.insert(INSERT, "Numero da Sepultura: ", INSERT, linha[1], INSERT, "\n")
@@ -497,27 +521,6 @@ class GUI:
         self.insere.iconbitmap('images\icon.ico')
         self.insere.title('Consulta de Obitos')
 
-    def cria_banco(self):
-        self.conexao = sqlite3.connect('promemoria.db')
-        c = self.conexao.cursor()
-
-        c.execute("CREATE TABLE IF NOT EXISTS cemiterio(\
-            NumObito int(20),\
-            NumSepultura int(20),\
-            Nome varchar(100),\
-            NomeContribuinte varchar(100),\
-            Idade int(3),\
-            Pai varchar(100),\
-            Mae varchar(100),\
-            Natural varchar(100),\
-            CausaMorte varchar(100),\
-            DataFalecimento varchar(30),\
-            InumadoSepultura varchar(100),\
-            Cemiterio varchar(100),\
-            Quadra varchar(100),\
-            Livro varchar(100),\
-            Folha varchar(100));")
-
     def reset(self):
         self.lblMsg['text'] = ""
     
@@ -530,8 +533,13 @@ class GUI:
 
         else:
             try:
-                self.conexao = sqlite3.connect('promemoria.db')
+                self.conexao = pymysql.connect(
+                host = '192.168.0.19',
+                user = 'ian2',
+                passwd = 'password'
+                )    
                 c = self.conexao.cursor()  
+                c.execute("USE cemiterio;")
                 c.execute("INSERT INTO cemiterio VALUES(\
                     '" + self.entNumObito.get().lower() + "',\
                     '" + self.entNumSepultura.get().lower() + "',\
@@ -578,8 +586,6 @@ class GUI:
                 t.start()
 
 
-
-GUI.cria_banco(GUI) #cria o banco se n existir
 pagina = Tk()
 pagina.iconbitmap('images\icon.ico')
 pagina.title('Consulta de Obitos')
